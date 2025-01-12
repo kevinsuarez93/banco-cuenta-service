@@ -16,11 +16,9 @@ public class ProductoServiceImpl implements ProductoService {
 
     private ProductoRepository productRepository;
     
-    private IntegracionProducto integracionProducto;
-    
-    public ProductoServiceImpl(ProductoRepository productRepository, IntegracionProducto integracionProducto) {
+
+    public ProductoServiceImpl(ProductoRepository productRepository) {
         this.productRepository = productRepository;
-        this.integracionProducto = integracionProducto;
     }
 
     @Override
@@ -29,10 +27,7 @@ public class ProductoServiceImpl implements ProductoService {
     	return productRepository.getProduct(id);
     }
 
-    @Override
-    public ProductoDto getProductIpc(Long id, Optional<String> apiVersion) throws EntidadNoEncontradaException {
-		return integracionProducto.buscarProducto(id, apiVersion);
-    }
+
 
     @Override
     public Producto getProductV2(Long id) throws EntidadNoEncontradaException {

@@ -3,12 +3,12 @@ package ec.com.banco.cuenta.domain.cuenta.services;
 import ec.com.banco.cuenta.domain.common.constants.ClienteExceptionMessages;
 import ec.com.banco.cuenta.domain.common.exception.EntidadNoEncontradaException;
 import ec.com.banco.cuenta.domain.cuenta.models.Cuenta;
+import ec.com.banco.cuenta.domain.cuenta.models.Filtro;
 import ec.com.banco.cuenta.domain.cuenta.repositories.CuentaRepository;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -48,7 +48,12 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public List<Cuenta> obtenerCuentas(Date fechaInicio, Date fechaFin, Long clienteId) {
-        return clienteRepository.obtenerCuentas(fechaInicio, fechaFin, clienteId);
+    public List<Cuenta> obtenerCuentas(Filtro filtro) throws EntidadNoEncontradaException {
+        return clienteRepository.obtenerCuentas(filtro);
+    }
+
+    @Override
+    public Cuenta obtenerCuentaPorFiltros(Long clienteId) throws EntidadNoEncontradaException {
+        return clienteRepository.obtenerCuentaPorFiltros(clienteId);
     }
 }

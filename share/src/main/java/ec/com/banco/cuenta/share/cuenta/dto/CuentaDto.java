@@ -16,6 +16,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class CuentaDto {
 
     @NotNull(groups = { Default.class, Actualizar.class })

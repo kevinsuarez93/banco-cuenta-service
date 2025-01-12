@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import ec.com.banco.cuenta.domain.common.exception.EntidadNoEncontradaException;
 import ec.com.banco.cuenta.domain.cuenta.models.Cuenta;
+import ec.com.banco.cuenta.domain.cuenta.models.Filtro;
 import ec.com.banco.cuenta.domain.cuenta.repositories.CuentaRepository;
 import ec.com.banco.cuenta.infrastructure.common.repositories.JPABaseRepository;
 import ec.com.banco.cuenta.infrastructure.cuenta.entities.CuentaEntity;
@@ -79,12 +80,21 @@ public class CuentaRepositoryImpl extends JPABaseRepository<CuentaEntity, Long>
     }
 
     @Override
-    public List<Cuenta> obtenerCuentas(Date fechaInicio, Date fechaFin, Long clienteId) {
+    public List<Cuenta> obtenerCuentas(Filtro filtro) {
         JPQLQuery<CuentaEntity> jpqlQuery = getQueryFactory().selectFrom(cuentaEntity)
                 .leftJoin(cuentaEntity.movimientos, movimientoEntity).fetchJoin()
-                .where(buildQueryED(fechaInicio,fechaFin,clienteId)).distinct();
+                .where(buildQuery(filtro)).distinct();
         List<CuentaEntity> entities = jpqlQuery.fetch();
         return clienteMapper.entitiesToDomains(entities);
+    }
+
+    @Override
+    public Cuenta obtenerCuentaPorFiltros(Long clienteId) {
+        JPQLQuery<CuentaEntity> jpqlQuery = getQueryFactory().selectFrom(cuentaEntity)
+                .leftJoin(cuentaEntity.movimientos, movimientoEntity).fetchJoin()
+                .where(buildQueryED(clienteId)).distinct();
+        CuentaEntity entities = jpqlQuery.fetchOne();
+        return clienteMapper.entityToDomain(entities);
     }
 
     /**
@@ -93,23 +103,55 @@ public class CuentaRepositoryImpl extends JPABaseRepository<CuentaEntity, Long>
      * @param query Query
      * @return Builder boolean query
      */
-    private BooleanBuilder buildQueryED(Date fechaInicio, Date fechaFin, Long clienteId) {
+    private BooleanBuilder buildQueryED(Long clienteId) {
 
         BooleanBuilder where = new BooleanBuilder();
 
         if (clienteId != null) {
             where.and(cuentaEntity.clienteId.eq(clienteId));
         }
-
-        if (fechaInicio != null && fechaFin != null) {
+/*
+        if (filtro.getFechaInicio() != null && filtro.getFechaFinal()  != null) {
             // 📌 Convertir Date a LocalDate y asegurar 00:00:00 en fechaInicio
-            LocalDateTime inicioDateTime = fechaInicio.toInstant()
+            LocalDateTime inicioDateTime = filtro.getFechaInicio() .toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate()
                     .atStartOfDay(); // 📌 2025-01-11 00:00:00
 
             // 📌 Convertir Date a LocalDate y asegurar 23:59:59 en fechaFin
-            LocalDateTime finDateTime = fechaFin.toInstant()
+            LocalDateTime finDateTime = filtro.getFechaFinal().toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+                    .atTime(23, 59, 59); // 📌 2025-01-11 23:59:59
+
+            // 📌 Convertir LocalDateTime de nuevo a Date
+            Date inicio = Date.from(inicioDateTime.atZone(ZoneId.systemDefault()).toInstant());
+            Date fin = Date.from(finDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+            // 📌 Ahora between() funciona correctamente con Date
+            where.and(movimientoEntity.fecha.between(inicio, fin));
+        }
+*/
+        return where;
+    }
+
+    private BooleanBuilder buildQuery(Filtro filtro) {
+
+        BooleanBuilder where = new BooleanBuilder();
+
+        if (filtro.getClienteId() != null) {
+            where.and(cuentaEntity.clienteId.eq(filtro.getClienteId()));
+        }
+
+        if (filtro.getFechaInicio() != null && filtro.getFechaFinal()  != null) {
+            // 📌 Convertir Date a LocalDate y asegurar 00:00:00 en fechaInicio
+            LocalDateTime inicioDateTime = filtro.getFechaInicio() .toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+                    .atStartOfDay(); // 📌 2025-01-11 00:00:00
+
+            // 📌 Convertir Date a LocalDate y asegurar 23:59:59 en fechaFin
+            LocalDateTime finDateTime = filtro.getFechaFinal().toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate()
                     .atTime(23, 59, 59); // 📌 2025-01-11 23:59:59

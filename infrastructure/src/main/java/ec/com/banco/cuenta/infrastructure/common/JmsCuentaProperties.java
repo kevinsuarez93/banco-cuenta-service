@@ -1,11 +1,11 @@
-package ec.com.banco.cuenta.infrastructure.common.jms;
+package ec.com.banco.cuenta.infrastructure.common;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@ConfigurationProperties("jms.products")
+@ConfigurationProperties("jms.cuentas")
 @Getter
 @Setter
 public class JmsCuentaProperties {

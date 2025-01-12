@@ -1,14 +1,17 @@
-package ec.com.banco.cuenta.infrastructure.common.jms;
+package ec.com.banco.cuenta.infrastructure.ejemplo.in.jms.impl;
 
-import ec.com.banco.cuenta.infrastructure.cuenta.in.jms.operacion.BuscarCuentaOperation;
-import ec.com.banco.cuenta.infrastructure.ejemplo.in.jms.impl.ActualizarProductoOperation;
-import ec.com.banco.cuenta.infrastructure.ejemplo.in.jms.impl.ObtenerProductoOperation;
+import ec.com.banco.cuenta.infrastructure.common.jms.Servicio;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import ec.com.banco.cuenta.share.ejemplo.enums.Operacion;
 
 @Service
+@Slf4j
 public class ProductoServiceFactory {
+
+	private static final String OPERACION_NO_SOPORTADA = "Operacion no soportada %s";
+
 
 	private ObtenerProductoOperation getProduct;
 	
@@ -27,6 +30,7 @@ public class ProductoServiceFactory {
 		try {
 			o = Operacion.valueOf(operacion);
 		} catch (Exception e) {
+			log.error(String.format(OPERACION_NO_SOPORTADA), e.getMessage());
 			throw new IllegalArgumentException(String.format("Operacion no soportada %s", operacion));
 		}
 		switch (o) {
@@ -37,6 +41,7 @@ public class ProductoServiceFactory {
 		case GET_CUENTA_POR_ID:
 			return buscarCuenta;
 		default:
+			log.error(String.format(OPERACION_NO_SOPORTADA));
 			throw new IllegalArgumentException(String.format("Operacion no soportada %s", operacion));
 		}
 		

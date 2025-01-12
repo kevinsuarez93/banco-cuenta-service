@@ -13,8 +13,6 @@ public interface ProductoService {
 
 	Producto getProduct(Long id) throws EntidadNoEncontradaException;
 
-	ProductoDto getProductIpc(Long id, Optional<String> apiVersion) throws EntidadNoEncontradaException;
-
 	Producto getProductV2(Long id) throws EntidadNoEncontradaException;
 
 	void updateProduct(Producto product);

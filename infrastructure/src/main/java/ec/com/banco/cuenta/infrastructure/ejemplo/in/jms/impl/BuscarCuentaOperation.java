@@ -1,4 +1,4 @@
-package ec.com.banco.cuenta.infrastructure.cuenta.in.jms.operacion;
+package ec.com.banco.cuenta.infrastructure.ejemplo.in.jms.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,10 +27,11 @@ public class BuscarCuentaOperation implements Servicio {
 
     @Override
     public String execute(TextMessage textMessage) throws JsonProcessingException, JMSException, EntidadNoEncontradaException {
+        log.info("textMessage: "+ textMessage);
         ObjectMapper objectMapper = new ObjectMapper();
-        CuentaDto companiaDto = objectMapper.readValue(textMessage.getText(), CuentaDto.class);
+        CuentaDto cuentaDto = objectMapper.readValue(textMessage.getText(), CuentaDto.class);
 
-        Cuenta cuenta = this.cuentaService.obtenerCuenta(1L);
+        Cuenta cuenta = this.cuentaService.obtenerCuentaPorFiltros(1L);
         if (cuenta == null) {
             throw new EntidadNoEncontradaException("No existe compania con el codigo " + textMessage.getText());
         }

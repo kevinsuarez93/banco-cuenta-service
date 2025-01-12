@@ -33,10 +33,6 @@ public class ProductoIpcRestAdapter {
         this.productoMapper = productoMapper;
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ProductoDto getProductUsandoMensajes(@PathVariable(name = "id") Long id, @RequestHeader("X-API-VERSION") Optional<String> apiVersion) throws EntidadNoEncontradaException {
-		return productoService.getProductIpc(id, apiVersion);
-    }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateProduct(@RequestBody ProductoDto productDto) throws JsonProcessingException, RemoteExecutionException, JMSException {

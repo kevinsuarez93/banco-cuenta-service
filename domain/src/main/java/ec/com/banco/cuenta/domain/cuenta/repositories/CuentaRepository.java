@@ -2,9 +2,8 @@ package ec.com.banco.cuenta.domain.cuenta.repositories;
 
 import ec.com.banco.cuenta.domain.common.exception.EntidadNoEncontradaException;
 import ec.com.banco.cuenta.domain.cuenta.models.Cuenta;
+import ec.com.banco.cuenta.domain.cuenta.models.Filtro;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 public interface CuentaRepository {
@@ -17,5 +16,7 @@ public interface CuentaRepository {
 
     void eliminarCuenta(Long clienteId) throws EntidadNoEncontradaException;
 
-    List<Cuenta> obtenerCuentas(Date fechaInicio, Date fechaFin, Long clienteId);
+    List<Cuenta> obtenerCuentas(Filtro filtro);
+
+    Cuenta obtenerCuentaPorFiltros(Long clienteId);
 }
