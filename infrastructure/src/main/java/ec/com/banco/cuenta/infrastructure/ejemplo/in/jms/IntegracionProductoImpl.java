@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import ec.com.banco.cuenta.infrastructure.common.exceptions.RemoteExecutionException;
 import ec.com.banco.cuenta.infrastructure.common.jms.JmsClient;
-import ec.com.banco.cuenta.infrastructure.common.jms.JmsPropertiesService;
+import ec.com.banco.cuenta.infrastructure.common.jms.JmsCuentaProperties;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,9 +19,9 @@ import jakarta.jms.JMSException;
 public class IntegracionProductoImpl implements IntegracionProducto {
 
 	private JmsClient jmsClient;
-    private JmsPropertiesService propertiesService;
+    private JmsCuentaProperties propertiesService;
     
-    public IntegracionProductoImpl(JmsClient jmsClient, JmsPropertiesService propertiesService) {
+    public IntegracionProductoImpl(JmsClient jmsClient, JmsCuentaProperties propertiesService) {
         this.jmsClient = jmsClient;
         this.propertiesService = propertiesService;
     }

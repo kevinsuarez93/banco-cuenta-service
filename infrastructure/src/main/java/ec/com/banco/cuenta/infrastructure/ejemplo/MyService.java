@@ -1,16 +1,16 @@
 package ec.com.banco.cuenta.infrastructure.ejemplo;
 
-import ec.com.banco.cuenta.infrastructure.common.jms.JmsPropertiesService;
+import ec.com.banco.cuenta.infrastructure.common.jms.JmsCuentaProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 @Service
-@EnableConfigurationProperties(JmsPropertiesService.class)
+@EnableConfigurationProperties(JmsCuentaProperties.class)
 public class MyService {
 
-	private final JmsPropertiesService serviceProperties;
+	private final JmsCuentaProperties serviceProperties;
 
-	public MyService(JmsPropertiesService serviceProperties) {
+	public MyService(JmsCuentaProperties serviceProperties) {
 		this.serviceProperties = serviceProperties;
 	}
 

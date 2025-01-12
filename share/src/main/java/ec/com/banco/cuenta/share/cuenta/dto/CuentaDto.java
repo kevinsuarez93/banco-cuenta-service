@@ -8,6 +8,8 @@ import jakarta.validation.groups.Default;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,6 +37,8 @@ public class CuentaDto {
 
     @NotNull(groups = { Default.class, Crear.class })
     private Long clienteId;
+
+    private List<MovimientoDto> movimientos = new ArrayList<>();
 
     // Interfaces para definir grupos
     public interface Crear {

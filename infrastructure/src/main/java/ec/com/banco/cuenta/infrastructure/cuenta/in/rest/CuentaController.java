@@ -7,6 +7,7 @@ import ec.com.banco.cuenta.domain.cuenta.services.CuentaService;
 import ec.com.banco.cuenta.infrastructure.common.exceptions.ErrorResponse;
 import ec.com.banco.cuenta.infrastructure.cuenta.mappers.CuentaMapper;
 import ec.com.banco.cuenta.share.cuenta.dto.CuentaDto;
+import ec.com.banco.cuenta.share.cuenta.dto.FiltroDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,9 +16,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @RestController
 @RequestMapping("/cuentas")
@@ -82,6 +88,24 @@ public class CuentaController {
             throws EntidadNoEncontradaException {
         clienteService.eliminarCuenta(noCia);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Buscar compania por codigo.
+     *
+     * @param noCia codigo de compania
+     * @return CompaniasDto
+     * @author ksuarez on 2024/04/17.
+     */
+    @PostMapping("/obtenerPorFiltros")
+    @Operation(summary = "Obtener compania por id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Compania encontrada."),
+            @ApiResponse(responseCode = "404", description = "Compania no encontrada.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
+    public ResponseEntity<List<CuentaDto>> obtenerCuentas(@RequestBody FiltroDto filtro)
+            {
+        return new ResponseEntity<>(
+                this.clienteMapper.domainsToDtos(clienteService.obtenerCuentas(filtro.getFechaInicio(),filtro.getFechaFinal(),filtro.getClienteId())),
+                HttpStatus.OK);
     }
 
 }

@@ -1,7 +1,7 @@
 package ec.com.banco.cuenta.infrastructure.ejemplo.in.jms;
 
 import ec.com.banco.cuenta.infrastructure.common.jms.JmsClient;
-import ec.com.banco.cuenta.infrastructure.common.jms.JmsPropertiesService;
+import ec.com.banco.cuenta.infrastructure.common.jms.JmsCuentaProperties;
 import jakarta.jms.TextMessage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.jms.annotation.JmsListener;
@@ -19,9 +19,9 @@ public class ProductoMessageListener {
     
 	private JmsClient jmsClient;
 
-    private JmsPropertiesService propertiesService;
+    private JmsCuentaProperties propertiesService;
 
-    public ProductoMessageListener(JmsClient jmsClient, JmsPropertiesService propertiesService) {
+    public ProductoMessageListener(JmsClient jmsClient, JmsCuentaProperties propertiesService) {
         this.jmsClient = jmsClient;
 		this.propertiesService = propertiesService;
     }

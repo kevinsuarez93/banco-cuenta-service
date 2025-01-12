@@ -8,7 +8,7 @@ import lombok.Setter;
 @ConfigurationProperties("jms.products")
 @Getter
 @Setter
-public class JmsPropertiesService {
+public class JmsCuentaProperties {
 
 	private String message;
 	private String replyqueue;

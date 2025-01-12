@@ -1,5 +1,6 @@
 package ec.com.banco.cuenta.infrastructure.common.exceptions;
 
+import ec.com.banco.cuenta.domain.common.exception.ReglaDeNegocioException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,5 +67,18 @@ public class GlobalExceptionHandler {
         apiError.setStatus(HttpStatus.BAD_REQUEST.value());
         apiError.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
+
+    @ExceptionHandler(ReglaDeNegocioException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(HttpServletRequest request,
+                                                                               ReglaDeNegocioException exception) {
+        ErrorResponse apiError = new ErrorResponse();
+        apiError.setUrl(request.getRequestURL().toString());
+        apiError.setMethod(request.getMethod());
+        apiError.setStatus(HttpStatus.CONFLICT.value());
+        apiError.setMessage(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
     }
 }

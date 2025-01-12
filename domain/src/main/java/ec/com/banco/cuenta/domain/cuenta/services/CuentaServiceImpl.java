@@ -8,6 +8,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class CuentaServiceImpl implements CuentaService {
 
@@ -37,5 +40,15 @@ public class CuentaServiceImpl implements CuentaService {
                     null, LocaleContextHolder.getLocale()));
         }
         clienteRepository.eliminarCuenta(clienteId);
+    }
+
+    @Override
+    public Cuenta obtenerCuenta(Long clienteId) throws EntidadNoEncontradaException {
+        return clienteRepository.obtenerCuenta(clienteId);
+    }
+
+    @Override
+    public List<Cuenta> obtenerCuentas(Date fechaInicio, Date fechaFin, Long clienteId) {
+        return clienteRepository.obtenerCuentas(fechaInicio, fechaFin, clienteId);
     }
 }

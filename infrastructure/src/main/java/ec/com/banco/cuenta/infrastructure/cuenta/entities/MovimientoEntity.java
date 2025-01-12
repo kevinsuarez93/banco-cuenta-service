@@ -12,6 +12,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -29,7 +30,7 @@ public class MovimientoEntity implements Serializable {
     private Long movimientoId;
 
     @NotNull
-    private LocalDateTime fecha;
+    private Date fecha;
 
     @NotNull
     @Size(max = 20)
@@ -40,7 +41,7 @@ public class MovimientoEntity implements Serializable {
     @Column(precision = 15, scale = 2)
     private BigDecimal valor;
 
-    @NotNull
+
     @Column(precision = 15, scale = 2)
     private BigDecimal saldo;
 
