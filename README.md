@@ -43,3 +43,8 @@ mvn spring-boot:run -pl bootstrap
 curl http://localhost:8080/products/1
 ```
 
+# Desplegar en docker
+```cmd
+docker build . -f deploy/Dockerfile -t banco-cuenta-service
+docker run -d -p 8082:8082 banco-cuenta-service
+```
