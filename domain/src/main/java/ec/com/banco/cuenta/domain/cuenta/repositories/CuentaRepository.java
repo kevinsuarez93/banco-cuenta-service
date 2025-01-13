@@ -18,5 +18,5 @@ public interface CuentaRepository {
 
     List<Cuenta> obtenerCuentas(Filtro filtro);
 
-    Cuenta obtenerCuentaPorFiltros(Long clienteId);
+    Cuenta obtenerCuentaPorFiltros(Filtro filtro);
 }

@@ -7,7 +7,8 @@ import ec.com.banco.cuenta.domain.cuenta.models.Cuenta;
 import ec.com.banco.cuenta.domain.cuenta.services.CuentaService;
 import ec.com.banco.cuenta.infrastructure.common.jms.Servicio;
 import ec.com.banco.cuenta.infrastructure.cuenta.mappers.CuentaMapper;
-import ec.com.banco.cuenta.share.cuenta.dto.CuentaDto;
+import ec.com.banco.cuenta.infrastructure.cuenta.mappers.FiltroMapper;
+import ec.com.banco.cuenta.share.cuenta.dto.FiltroDto;
 import jakarta.jms.JMSException;
 import jakarta.jms.TextMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -19,19 +20,21 @@ public class BuscarCuentaOperation implements Servicio {
 
     private CuentaService cuentaService;
     private CuentaMapper cuentaMapper;
+    private FiltroMapper filtroMapper;
 
-    public BuscarCuentaOperation(CuentaService cuentaService, CuentaMapper cuentaMapper) {
+    public BuscarCuentaOperation(CuentaService cuentaService, CuentaMapper cuentaMapper, FiltroMapper filtroMapper) {
         this.cuentaService = cuentaService;
         this.cuentaMapper = cuentaMapper;
+        this.filtroMapper = filtroMapper;
     }
 
     @Override
     public String execute(TextMessage textMessage) throws JsonProcessingException, JMSException, EntidadNoEncontradaException {
         log.info("textMessage: "+ textMessage);
         ObjectMapper objectMapper = new ObjectMapper();
-        CuentaDto cuentaDto = objectMapper.readValue(textMessage.getText(), CuentaDto.class);
+        FiltroDto filtroDto = objectMapper.readValue(textMessage.getText(), FiltroDto.class);
 
-        Cuenta cuenta = this.cuentaService.obtenerCuentaPorFiltros(1L);
+        Cuenta cuenta = this.cuentaService.obtenerCuentaPorFiltros(this.filtroMapper.dtoToDomain(filtroDto));
         if (cuenta == null) {
             throw new EntidadNoEncontradaException("No existe compania con el codigo " + textMessage.getText());
         }

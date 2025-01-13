@@ -89,51 +89,15 @@ public class CuentaRepositoryImpl extends JPABaseRepository<CuentaEntity, Long>
     }
 
     @Override
-    public Cuenta obtenerCuentaPorFiltros(Long clienteId) {
+    public Cuenta obtenerCuentaPorFiltros(Filtro filtro) {
         JPQLQuery<CuentaEntity> jpqlQuery = getQueryFactory().selectFrom(cuentaEntity)
                 .leftJoin(cuentaEntity.movimientos, movimientoEntity).fetchJoin()
-                .where(buildQueryED(clienteId)).distinct();
+                .where(buildQuery(filtro)).distinct();
         CuentaEntity entities = jpqlQuery.fetchOne();
         return clienteMapper.entityToDomain(entities);
     }
 
-    /**
-     * Builder query
-     *
-     * @param query Query
-     * @return Builder boolean query
-     */
-    private BooleanBuilder buildQueryED(Long clienteId) {
 
-        BooleanBuilder where = new BooleanBuilder();
-
-        if (clienteId != null) {
-            where.and(cuentaEntity.clienteId.eq(clienteId));
-        }
-/*
-        if (filtro.getFechaInicio() != null && filtro.getFechaFinal()  != null) {
-            // 📌 Convertir Date a LocalDate y asegurar 00:00:00 en fechaInicio
-            LocalDateTime inicioDateTime = filtro.getFechaInicio() .toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate()
-                    .atStartOfDay(); // 📌 2025-01-11 00:00:00
-
-            // 📌 Convertir Date a LocalDate y asegurar 23:59:59 en fechaFin
-            LocalDateTime finDateTime = filtro.getFechaFinal().toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate()
-                    .atTime(23, 59, 59); // 📌 2025-01-11 23:59:59
-
-            // 📌 Convertir LocalDateTime de nuevo a Date
-            Date inicio = Date.from(inicioDateTime.atZone(ZoneId.systemDefault()).toInstant());
-            Date fin = Date.from(finDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
-            // 📌 Ahora between() funciona correctamente con Date
-            where.and(movimientoEntity.fecha.between(inicio, fin));
-        }
-*/
-        return where;
-    }
 
     private BooleanBuilder buildQuery(Filtro filtro) {
 

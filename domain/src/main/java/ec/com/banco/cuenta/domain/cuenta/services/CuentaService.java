@@ -17,6 +17,6 @@ public interface CuentaService {
 
     List<Cuenta> obtenerCuentas(Filtro filtro) throws EntidadNoEncontradaException;
 
-    Cuenta obtenerCuentaPorFiltros(Long clienteId) throws EntidadNoEncontradaException;
+    Cuenta obtenerCuentaPorFiltros(Filtro filtro) throws EntidadNoEncontradaException;
 
 }
