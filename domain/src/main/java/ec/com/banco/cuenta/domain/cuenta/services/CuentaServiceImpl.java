@@ -53,7 +53,7 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public Cuenta obtenerCuentaPorFiltros(Filtro filtro) throws EntidadNoEncontradaException {
+    public List<Cuenta> obtenerCuentaPorFiltros(Filtro filtro) throws EntidadNoEncontradaException {
         return clienteRepository.obtenerCuentaPorFiltros(filtro);
     }
 }

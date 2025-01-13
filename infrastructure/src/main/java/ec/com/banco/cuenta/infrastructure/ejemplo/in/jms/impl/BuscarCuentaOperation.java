@@ -14,6 +14,8 @@ import jakarta.jms.TextMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class BuscarCuentaOperation implements Servicio {
@@ -34,10 +36,10 @@ public class BuscarCuentaOperation implements Servicio {
         ObjectMapper objectMapper = new ObjectMapper();
         FiltroDto filtroDto = objectMapper.readValue(textMessage.getText(), FiltroDto.class);
 
-        Cuenta cuenta = this.cuentaService.obtenerCuentaPorFiltros(this.filtroMapper.dtoToDomain(filtroDto));
-        if (cuenta == null) {
+        List<Cuenta> cuentas = this.cuentaService.obtenerCuentaPorFiltros(this.filtroMapper.dtoToDomain(filtroDto));
+        if (cuentas == null) {
             throw new EntidadNoEncontradaException("No existe compania con el codigo " + textMessage.getText());
         }
-        return objectMapper.writeValueAsString(cuentaMapper.domainToDto(cuenta));
+        return objectMapper.writeValueAsString(cuentaMapper.domainsToDtos(cuentas));
     }
 }

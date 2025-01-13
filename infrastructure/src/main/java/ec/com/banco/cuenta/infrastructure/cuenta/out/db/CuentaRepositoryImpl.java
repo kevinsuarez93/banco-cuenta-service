@@ -89,12 +89,12 @@ public class CuentaRepositoryImpl extends JPABaseRepository<CuentaEntity, Long>
     }
 
     @Override
-    public Cuenta obtenerCuentaPorFiltros(Filtro filtro) {
+    public List<Cuenta> obtenerCuentaPorFiltros(Filtro filtro) {
         JPQLQuery<CuentaEntity> jpqlQuery = getQueryFactory().selectFrom(cuentaEntity)
                 .leftJoin(cuentaEntity.movimientos, movimientoEntity).fetchJoin()
                 .where(buildQuery(filtro)).distinct();
-        CuentaEntity entities = jpqlQuery.fetchOne();
-        return clienteMapper.entityToDomain(entities);
+        List<CuentaEntity> entities = jpqlQuery.fetch();
+        return clienteMapper.entitiesToDomains(entities);
     }
 
 
