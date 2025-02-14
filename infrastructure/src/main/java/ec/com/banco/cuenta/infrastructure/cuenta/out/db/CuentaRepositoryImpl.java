@@ -2,6 +2,7 @@ package ec.com.banco.cuenta.infrastructure.cuenta.out.db;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import ec.com.banco.cuenta.domain.common.exception.EntidadNoEncontradaException;
 import ec.com.banco.cuenta.domain.cuenta.models.Cuenta;
 import ec.com.banco.cuenta.domain.cuenta.models.Filtro;
@@ -29,7 +30,7 @@ import static ec.com.banco.cuenta.infrastructure.cuenta.entities.QMovimientoEnti
 public class CuentaRepositoryImpl extends JPABaseRepository<CuentaEntity, Long>
         implements CuentaRepository {
 
-    private final CuentaMapper clienteMapper;
+    private final CuentaMapper cuentaMapper;
 
     private static final String NO_EXISTEN_REGISTROS = "No existen registros con los datos proporcionados";
 
@@ -37,35 +38,66 @@ public class CuentaRepositoryImpl extends JPABaseRepository<CuentaEntity, Long>
     @PersistenceContext
     private final EntityManager entityManager;
 
-    public CuentaRepositoryImpl(CuentaMapper clienteMapper, EntityManager entityManager) {
+    public CuentaRepositoryImpl(CuentaMapper cuentaMapper, EntityManager entityManager) {
         super(CuentaEntity.class, entityManager);
-        this.clienteMapper = clienteMapper;
+        this.cuentaMapper = cuentaMapper;
         this.entityManager = entityManager;
     }
 
     @Override
     public void crearCuenta(Cuenta cliente) {
-        this.save(clienteMapper.domainToEntity(cliente));
+        this.save(cuentaMapper.domainToEntity(cliente));
     }
 
     @Override
-    public void actualizarCuenta(Cuenta cliente) throws EntidadNoEncontradaException {
-        if (obtenerCuenta(cliente.getCuentaId()) == null) {
+    public void actualizarCuenta(Cuenta cuenta) throws EntidadNoEncontradaException {
+        if (obtenerCuenta(cuenta.getCuentaId()) == null) {
             throw new EntidadNoEncontradaException(
-                    String.format("No existe compania con del codigo %s ", cliente.getCuentaId()));
+                    String.format("No existe compania con del codigo %s ", cuenta.getCuentaId()));
         }
 
         CuentaEntity entity = getQueryFactory().selectFrom(cuentaEntity)
-                .where(cuentaEntity.cuentaId.eq(cliente.getCuentaId())).fetchOne();
-        clienteMapper.domainToEntity(cliente, entity);
+                .where(cuentaEntity.cuentaId.eq(cuenta.getCuentaId())).fetchOne();
+        cuentaMapper.domainToEntity(cuenta, entity);
         this.save(entity);
+    }
+
+    @Override
+    public void actualizarCuenta2(Cuenta cliente) throws EntidadNoEncontradaException {
+        JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, cuentaEntity);
+
+        updateClause
+                .where(cuentaEntity.cuentaId.eq(cliente.getCuentaId()));
+
+
+        if (cliente.getNumeroCuenta() != null) {
+            updateClause.set(cuentaEntity.numeroCuenta, cliente.getNumeroCuenta());
+        }
+
+        if (cliente.getTipoCuenta() != null) {
+            updateClause.set(cuentaEntity.tipoCuenta, cliente.getTipoCuenta());
+        }
+
+        if (cliente.getSaldoInicial() != null){
+            updateClause.set(cuentaEntity.saldoInicial, cliente.getSaldoInicial());
+        }
+
+        if(cliente.getEstado() != null){
+            updateClause.set(cuentaEntity.estado, cliente.getEstado());
+        }
+
+        if (cliente.getClienteId() != null){
+            updateClause.set(cuentaEntity.clienteId, cliente.getClienteId());
+        }
+
+        updateClause.execute();
     }
 
     @Override
     public Cuenta obtenerCuenta(Long clienteId) {
         CuentaEntity entities = getQueryFactory().selectFrom(cuentaEntity)
                 .where(cuentaEntity.cuentaId.eq(clienteId)).fetchOne();
-        return clienteMapper.entityToDomain(entities);
+        return cuentaMapper.entityToDomain(entities);
     }
 
     @Override
@@ -85,7 +117,7 @@ public class CuentaRepositoryImpl extends JPABaseRepository<CuentaEntity, Long>
                 .leftJoin(cuentaEntity.movimientos, movimientoEntity).fetchJoin()
                 .where(buildQuery(filtro)).distinct();
         List<CuentaEntity> entities = jpqlQuery.fetch();
-        return clienteMapper.entitiesToDomains(entities);
+        return cuentaMapper.entitiesToDomains(entities);
     }
 
     @Override
@@ -94,7 +126,7 @@ public class CuentaRepositoryImpl extends JPABaseRepository<CuentaEntity, Long>
                 .leftJoin(cuentaEntity.movimientos, movimientoEntity).fetchJoin()
                 .where(buildQuery(filtro)).distinct();
         List<CuentaEntity> entities = jpqlQuery.fetch();
-        return clienteMapper.entitiesToDomains(entities);
+        return cuentaMapper.entitiesToDomains(entities);
     }
 
 

@@ -48,3 +48,15 @@ curl http://localhost:8080/products/1
 docker build . -f deploy/Dockerfile -t banco-cuenta-service
 docker run -d -p 8082:8082 banco-cuenta-service
 ```
+
+# Documentación
+
+La documentación de la API se encuentra disponible en el siguiente enlace:
+```
+http://localhost:8082/swagger-ui/index.html
+```
+
+Las definiciones de OpenAPI están en formato JSON de forma predeterminada. Para el formato yaml , podemos obtener las definiciones en:
+```
+http://localhost:8082/v3/api-docs
+```

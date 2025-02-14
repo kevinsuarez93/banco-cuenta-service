@@ -30,7 +30,7 @@ public class CuentaServiceImpl implements CuentaService {
 
     @Override
     public void actualizarCuenta(Cuenta cliente) throws EntidadNoEncontradaException {
-        clienteRepository.actualizarCuenta(cliente);
+        clienteRepository.actualizarCuenta2(cliente);
     }
 
     @Override

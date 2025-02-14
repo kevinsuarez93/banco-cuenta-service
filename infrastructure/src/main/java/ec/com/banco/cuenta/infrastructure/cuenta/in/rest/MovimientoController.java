@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,10 +52,9 @@ public class MovimientoController {
     }
 
     /**
-     * Actualizar Compania
+     * Actualizar Movimiento
      *
-     * @param actualizarDto dto para actualizar compania
-     * @return CompaniasActualizarDto
+     * @param actualizarDto dto para actualizar movimiento
      * @throws EntidadNoEncontradaException
      */
     @PatchMapping()
@@ -71,9 +69,9 @@ public class MovimientoController {
     }
 
     /**
-     * Eliminar compania
+     * Eliminar movimiento
      *
-     * @param noCia Id company
+     * @param movimientoId Id de movimiento
      */
     @DeleteMapping("/{movimientoId}")
     @Operation(summary = "Eliminar Movimiento")
@@ -86,10 +84,9 @@ public class MovimientoController {
     }
 
     /**
-     * Crear nueva Companias.
+     * Crear nuevo movimiento.
      *
-     * @param crearDto Dto de crear compania
-     * @return CompaniasCrearDto
+     * @param movimientoDto Dto de crear movimiento
      */
     @PostMapping("/registrar-movimiento")
     @Operation(summary = "Crear nuevo Movimiento")

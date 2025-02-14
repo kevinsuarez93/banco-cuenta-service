@@ -12,6 +12,8 @@ public interface CuentaRepository {
 
     void actualizarCuenta(Cuenta cliente) throws EntidadNoEncontradaException;
 
+    void actualizarCuenta2(Cuenta cliente) throws EntidadNoEncontradaException;
+
     Cuenta obtenerCuenta(Long clienteId);
 
     void eliminarCuenta(Long clienteId) throws EntidadNoEncontradaException;

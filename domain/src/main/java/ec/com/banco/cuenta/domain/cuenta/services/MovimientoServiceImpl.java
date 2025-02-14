@@ -11,15 +11,14 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Service
 public class MovimientoServiceImpl implements MovimientoService {
 
-    private MovimientoRepository movimientoRepository;
-    private MessageSource messageSource;
-    private CuentaService cuentaService;
+    private final MovimientoRepository movimientoRepository;
+    private final MessageSource messageSource;
+    private final CuentaService cuentaService;
 
     public MovimientoServiceImpl(MovimientoRepository movimientoRepository, MessageSource messageSource, CuentaService cuentaService) {
         this.movimientoRepository = movimientoRepository;

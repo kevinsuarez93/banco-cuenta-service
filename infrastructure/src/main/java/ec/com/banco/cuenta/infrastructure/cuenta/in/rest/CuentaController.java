@@ -59,11 +59,9 @@ public class CuentaController {
     }
 
     /**
-     * Actualizar Compania
+     * Actualizar Cuenta
      *
-     * @param actualizarDto dto para actualizar compania
-     * @return CompaniasActualizarDto
-     * @throws EntidadNoEncontradaException
+     * @param actualizarDto dto para actualizar cuenta
      */
     @PatchMapping()
     @Operation(summary = "Actualizar Cuenta")
@@ -77,7 +75,7 @@ public class CuentaController {
     }
 
     /**
-     * Eliminar compania
+     * Eliminar cuenta
      *
      * @param noCia Id company
      */
@@ -92,15 +90,15 @@ public class CuentaController {
     }
 
     /**
-     * Buscar compania por codigo.
+     * Buscar Cuenta por codigo.
      *
-     * @return CompaniasDto
+     * @return CuentaDto
      * @author ksuarez on 2024/04/17.
      */
     @PostMapping("/obtenerPorFiltros")
-    @Operation(summary = "Obtener compania por id")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Compania encontrada."),
-            @ApiResponse(responseCode = "404", description = "Compania no encontrada.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
+    @Operation(summary = "Obtener Cuenta por id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Cuenta encontrada."),
+            @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
     public ResponseEntity<List<CuentaDto>> obtenerCuentas(@RequestBody FiltroDto filtro)
             {
                 try {
