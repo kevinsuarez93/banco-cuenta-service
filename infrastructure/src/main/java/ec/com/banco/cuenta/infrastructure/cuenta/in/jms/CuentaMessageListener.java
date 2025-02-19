@@ -1,4 +1,4 @@
-package ec.com.banco.cuenta.infrastructure.ejemplo.in.jms;
+package ec.com.banco.cuenta.infrastructure.cuenta.in.jms;
 
 import ec.com.banco.cuenta.infrastructure.common.jms.JmsClient;
 import ec.com.banco.cuenta.infrastructure.common.JmsCuentaProperties;

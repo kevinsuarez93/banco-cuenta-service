@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import ec.com.banco.cuenta.infrastructure.common.exceptions.RemoteExecutionException;
-import ec.com.banco.cuenta.infrastructure.ejemplo.in.jms.impl.ProductoServiceFactory;
 import org.apache.logging.log4j.ThreadContext;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;

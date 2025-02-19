@@ -49,32 +49,50 @@ public class MovimientoServiceImpl implements MovimientoService {
     @Override
     public void registrarMovimiento(Movimiento movimiento) throws EntidadNoEncontradaException, ReglaDeNegocioException {
 
-        Cuenta cuenta = this.cuentaService.obtenerCuenta(movimiento.getCuentaId());
+        // 1. Validar existencia de la cuenta
+        Cuenta cuenta = validarCuentaExiste(movimiento.getCuentaId());
 
-        if (cuenta == null) {
-            throw new EntidadNoEncontradaException(
-                    messageSource.getMessage(ClienteExceptionMessages.ERROR_NO_EXISTE, null, LocaleContextHolder.getLocale()));
-        }
-
+        // 2. Calcular y validar saldo
         BigDecimal saldoActual = cuenta.getSaldoInicial();
         BigDecimal nuevoSaldo = saldoActual.add(movimiento.getValor());
+        validarSaldoPositivo(nuevoSaldo);
 
-        // Validar saldo disponible en caso de retiro
-        if (nuevoSaldo.compareTo(BigDecimal.ZERO) < 0) {
-            throw new ReglaDeNegocioException(messageSource.getMessage(ClienteExceptionMessages.NEGOCIO_SALDO_NO_DISPONIBLE,
-                    null, LocaleContextHolder.getLocale()));
-        }
+        // 3. Completar datos del movimiento
+        asignarDatosMovimiento(movimiento, nuevoSaldo);
 
-        // Asignar fecha y saldo actualizado al movimiento
-        movimiento.setFecha(new Date());
-        movimiento.setSaldo(nuevoSaldo);
-
-        // Guardar el movimiento en la base de datos
+        // 4. Guardar el movimiento
         this.crearMovimiento(movimiento);
 
-        // Actualizar saldo en la cuenta
+        // 5. Actualizar saldo de la cuenta
+        actualizarSaldoCuenta(cuenta, nuevoSaldo);
+    }
+
+    private Cuenta validarCuentaExiste(Long cuentaId) throws EntidadNoEncontradaException {
+        Cuenta cuenta = cuentaService.obtenerCuenta(cuentaId);
+        if (cuenta == null) {
+            throw new EntidadNoEncontradaException(
+                    messageSource.getMessage(ClienteExceptionMessages.ERROR_NO_EXISTE, null, LocaleContextHolder.getLocale())
+            );
+        }
+        return cuenta;
+    }
+
+    private void validarSaldoPositivo(BigDecimal nuevoSaldo) throws ReglaDeNegocioException {
+        if (nuevoSaldo.compareTo(BigDecimal.ZERO) < 0) {
+            throw new ReglaDeNegocioException(
+                    messageSource.getMessage(ClienteExceptionMessages.NEGOCIO_SALDO_NO_DISPONIBLE, null, LocaleContextHolder.getLocale())
+            );
+        }
+    }
+
+    private void asignarDatosMovimiento(Movimiento movimiento, BigDecimal nuevoSaldo) {
+        // Asignar fecha y saldo
+        movimiento.setFecha(new Date());
+        movimiento.setSaldo(nuevoSaldo);
+    }
+
+    private void actualizarSaldoCuenta(Cuenta cuenta, BigDecimal nuevoSaldo) throws EntidadNoEncontradaException {
         cuenta.setSaldoInicial(nuevoSaldo);
         this.cuentaService.actualizarCuenta(cuenta);
-
     }
 }

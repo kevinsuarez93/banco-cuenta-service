@@ -14,8 +14,8 @@ import java.util.List;
 @Service
 public class CuentaServiceImpl implements CuentaService {
 
-    private CuentaRepository clienteRepository;
-    private MessageSource messageSource;
+    private final CuentaRepository clienteRepository;
+    private final MessageSource messageSource;
 
     public CuentaServiceImpl(CuentaRepository clienteRepository, MessageSource messageSource) {
         this.clienteRepository = clienteRepository;

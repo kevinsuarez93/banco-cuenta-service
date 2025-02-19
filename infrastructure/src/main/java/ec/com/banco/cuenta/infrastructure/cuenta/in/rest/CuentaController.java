@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,10 +40,10 @@ public class CuentaController {
 
 
     /**
-     * Crear nueva Companias.
+     * Crear nueva Cuenta.
      *
-     * @param crearDto Dto de crear compania
-     * @return CompaniasCrearDto
+     * @param crearDto Dto de crear cuenta
+     * @return Void
      */
     @PostMapping
     @Operation(summary = "Crear nuevo Cuenta")
@@ -92,7 +91,7 @@ public class CuentaController {
     /**
      * Buscar Cuenta por codigo.
      *
-     * @return CuentaDto
+     * @return List CuentaDto
      * @author ksuarez on 2024/04/17.
      */
     @PostMapping("/obtenerPorFiltros")

@@ -34,10 +34,10 @@ public class MovimientoController {
 
 
     /**
-     * Crear nueva Companias.
+     * Crear nueva Movimiento.
      *
-     * @param crearDto Dto de crear compania
-     * @return CompaniasCrearDto
+     * @param crearDto Dto de crear Movimiento
+     * @return Void
      */
     @PostMapping
     @Operation(summary = "Crear nuevo Movimiento")
@@ -45,7 +45,7 @@ public class MovimientoController {
             @ApiResponse(responseCode = "400", description = "Entrada inválida.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "409", description = "Movimiento ya exists", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
 
-    public ResponseEntity<Void> crearCuenta(@Validated(MovimientoDto.Crear.class) @RequestBody MovimientoDto crearDto)
+    public ResponseEntity<Void> crearMovimiento(@Validated(MovimientoDto.Crear.class) @RequestBody MovimientoDto crearDto)
             throws RegistroDuplicadoException {
         this.movimientoService.crearMovimiento(this.movimientoMapper.dtoToDomain(crearDto));
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -61,7 +61,7 @@ public class MovimientoController {
     @Operation(summary = "Actualizar Movimiento")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Movimiento ha sido actualizado."),
             @ApiResponse(responseCode = "404", description = "Movimiento no existe.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
-    public ResponseEntity<Void> actualizarCuenta(
+    public ResponseEntity<Void> actualizarMovimiento(
             @Validated(MovimientoDto.Actualizar.class) @RequestBody MovimientoDto actualizarDto)
             throws EntidadNoEncontradaException {
         this.movimientoService.actualizarMovimiento(this.movimientoMapper.dtoToDomain(actualizarDto));
@@ -77,19 +77,19 @@ public class MovimientoController {
     @Operation(summary = "Eliminar Movimiento")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Movimiento ha sido eliminada."),
             @ApiResponse(responseCode = "404", description = "Movimiento no existe.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
-    public ResponseEntity<Void> eliminarCuenta(@NotNull @PathVariable Long movimientoId)
+    public ResponseEntity<Void> eliminarMovimiento(@NotNull @PathVariable Long movimientoId)
             throws EntidadNoEncontradaException {
         movimientoService.eliminarMovimiento(movimientoId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
-     * Crear nuevo movimiento.
+     * Registrar movimiento.
      *
      * @param movimientoDto Dto de crear movimiento
      */
     @PostMapping("/registrar-movimiento")
-    @Operation(summary = "Crear nuevo Movimiento")
+    @Operation(summary = "Registrar nuevo Movimiento")
     @ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Movimiento creada."),
             @ApiResponse(responseCode = "400", description = "Entrada inválida.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "409", description = "Movimiento ya exists", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
@@ -99,6 +99,5 @@ public class MovimientoController {
         this.movimientoService.registrarMovimiento(this.movimientoMapper.dtoToDomain(movimientoDto));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
 
 }

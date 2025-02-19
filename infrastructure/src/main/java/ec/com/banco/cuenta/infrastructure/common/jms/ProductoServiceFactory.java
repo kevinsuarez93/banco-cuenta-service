@@ -1,6 +1,8 @@
-package ec.com.banco.cuenta.infrastructure.ejemplo.in.jms.impl;
+package ec.com.banco.cuenta.infrastructure.common.jms;
 
-import ec.com.banco.cuenta.infrastructure.common.jms.Servicio;
+import ec.com.banco.cuenta.infrastructure.cuenta.in.jms.impl.BuscarCuentaOperation;
+import ec.com.banco.cuenta.infrastructure.ejemplo.in.jms.impl.ActualizarProductoOperation;
+import ec.com.banco.cuenta.infrastructure.ejemplo.in.jms.impl.ObtenerProductoOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

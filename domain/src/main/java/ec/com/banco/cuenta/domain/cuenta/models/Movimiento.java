@@ -17,15 +17,11 @@ public class Movimiento {
 
     private Long cuentaId;
 
-
     private Date fecha;
-
 
     private String tipoMovimiento;
 
-
     private BigDecimal valor;
-
 
     private BigDecimal saldo;
 

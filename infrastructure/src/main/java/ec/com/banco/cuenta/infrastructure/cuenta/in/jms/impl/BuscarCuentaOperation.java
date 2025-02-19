@@ -1,4 +1,4 @@
-package ec.com.banco.cuenta.infrastructure.ejemplo.in.jms.impl;
+package ec.com.banco.cuenta.infrastructure.cuenta.in.jms.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
