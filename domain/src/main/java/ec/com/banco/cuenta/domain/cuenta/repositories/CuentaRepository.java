@@ -21,4 +21,6 @@ public interface CuentaRepository {
     List<Cuenta> obtenerCuentas(Filtro filtro);
 
     List<Cuenta> obtenerCuentaPorFiltros(Filtro filtro);
+
+    List<Cuenta> obtenerListadoCuentas();
 }

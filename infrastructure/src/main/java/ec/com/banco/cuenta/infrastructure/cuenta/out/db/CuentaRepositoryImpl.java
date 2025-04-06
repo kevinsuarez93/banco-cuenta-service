@@ -129,6 +129,12 @@ public class CuentaRepositoryImpl extends JPABaseRepository<CuentaEntity, Long>
         return cuentaMapper.entitiesToDomains(entities);
     }
 
+    @Override
+    public List<Cuenta> obtenerListadoCuentas() {
+        JPQLQuery<CuentaEntity> jpqlQuery = getQueryFactory().selectFrom(cuentaEntity);
+        List<CuentaEntity> entities = jpqlQuery.fetch();
+        return cuentaMapper.entitiesToDomains(entities);
+    }
 
 
     private BooleanBuilder buildQuery(Filtro filtro) {

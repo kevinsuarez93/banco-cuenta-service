@@ -1,5 +1,6 @@
 package ec.com.banco.cuenta.infrastructure.cuenta.out.db;
 
+import com.querydsl.jpa.JPQLQuery;
 import ec.com.banco.cuenta.domain.common.exception.EntidadNoEncontradaException;
 import ec.com.banco.cuenta.domain.cuenta.models.Movimiento;
 import ec.com.banco.cuenta.domain.cuenta.repositories.MovimientoRepository;
@@ -12,7 +13,7 @@ import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.List;
 import static ec.com.banco.cuenta.infrastructure.cuenta.entities.QMovimientoEntity.movimientoEntity;
 
 @Repository
@@ -69,5 +70,12 @@ public class MovimientoRepositoryImpl extends JPABaseRepository<MovimientoEntity
             log.error(NO_EXISTEN_REGISTROS, e.getMessage());
             throw new EntidadNoEncontradaException(e.getMessage());
         }
+    }
+
+    @Override
+    public List<Movimiento> obtenerListadoMovimientos() {
+        JPQLQuery<MovimientoEntity> jpqlQuery = getQueryFactory().selectFrom(movimientoEntity);
+        List<MovimientoEntity> entities = jpqlQuery.fetch();
+        return movimientoMapper.entitiesToDomains(entities);
     }
 }

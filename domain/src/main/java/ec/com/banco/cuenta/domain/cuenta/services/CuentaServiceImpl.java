@@ -23,28 +23,28 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public void crearCuenta(Cuenta cliente) {
+    public void crearCuenta(Cuenta cuenta) {
 
-        clienteRepository.crearCuenta(cliente);
+        clienteRepository.crearCuenta(cuenta);
     }
 
     @Override
-    public void actualizarCuenta(Cuenta cliente) throws EntidadNoEncontradaException {
-        clienteRepository.actualizarCuenta2(cliente);
+    public void actualizarCuenta(Cuenta cuenta) throws EntidadNoEncontradaException {
+        clienteRepository.actualizarCuenta2(cuenta);
     }
 
     @Override
-    public void eliminarCuenta(Long clienteId) throws EntidadNoEncontradaException {
-        if (this.clienteRepository.obtenerCuenta(clienteId) == null) {
+    public void eliminarCuenta(Long cuentaId) throws EntidadNoEncontradaException {
+        if (this.clienteRepository.obtenerCuenta(cuentaId) == null) {
             throw new EntidadNoEncontradaException(messageSource.getMessage(ClienteExceptionMessages.ERROR_NO_EXISTE,
                     null, LocaleContextHolder.getLocale()));
         }
-        clienteRepository.eliminarCuenta(clienteId);
+        clienteRepository.eliminarCuenta(cuentaId);
     }
 
     @Override
-    public Cuenta obtenerCuenta(Long clienteId) throws EntidadNoEncontradaException {
-        return clienteRepository.obtenerCuenta(clienteId);
+    public Cuenta obtenerCuenta(Long cuentaId) throws EntidadNoEncontradaException {
+        return clienteRepository.obtenerCuenta(cuentaId);
     }
 
     @Override
@@ -56,4 +56,10 @@ public class CuentaServiceImpl implements CuentaService {
     public List<Cuenta> obtenerCuentaPorFiltros(Filtro filtro) throws EntidadNoEncontradaException {
         return clienteRepository.obtenerCuentaPorFiltros(filtro);
     }
+
+    @Override
+    public List<Cuenta> obtenerListadoCuentas() {
+        return clienteRepository.obtenerListadoCuentas();
+    }
+
 }

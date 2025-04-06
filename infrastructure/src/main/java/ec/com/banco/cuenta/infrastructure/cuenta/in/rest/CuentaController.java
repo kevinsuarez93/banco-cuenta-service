@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -71,6 +72,40 @@ public class CuentaController {
             throws EntidadNoEncontradaException {
         this.clienteService.actualizarCuenta(this.clienteMapper.dtoToDomain(actualizarDto));
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+
+    /**
+     * Buscar todas las cuentas.
+     *
+     * @return Lista de CompaniasDto
+     * @author ksuarez on 2024/04/17.
+     */
+    @GetMapping()
+    @Operation(summary = "Obtener todas las cuentas")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "cuentas encontradas."),
+            @ApiResponse(responseCode = "404", description = "cuentas no existe.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
+    public ResponseEntity<List<CuentaDto>> obtenerListadoCuentas() {
+        return new ResponseEntity<>(
+                this.clienteMapper.domainsToDtos(clienteService.obtenerListadoCuentas()), HttpStatus.OK);
+    }
+
+    /**
+     * Buscar cuentas por codigo.
+     *
+     * @param cuentaId codigo de compania
+     * @return CompaniasDto
+     * @author ksuarez on 2024/04/17.
+     */
+    @GetMapping(value = "/{cuentaId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Obtener cuentas por id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "cuentas encontrada."),
+            @ApiResponse(responseCode = "404", description = "cuentas no encontrada.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
+    public ResponseEntity<CuentaDto> obtenerCuenta(@NotNull @PathVariable Long cuentaId)
+            throws EntidadNoEncontradaException {
+        return new ResponseEntity<>(this.clienteMapper.domainToDto(clienteService.obtenerCuenta(cuentaId)),
+                HttpStatus.OK);
     }
 
     /**

@@ -15,9 +15,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/movimientos")
@@ -66,6 +69,39 @@ public class MovimientoController {
             throws EntidadNoEncontradaException {
         this.movimientoService.actualizarMovimiento(this.movimientoMapper.dtoToDomain(actualizarDto));
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    /**
+     * Buscar todas las cuentas.
+     *
+     * @return Lista de CompaniasDto
+     * @author ksuarez on 2024/04/17.
+     */
+    @GetMapping()
+    @Operation(summary = "Obtener todas las cuentas")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "cuentas encontradas."),
+            @ApiResponse(responseCode = "404", description = "cuentas no existe.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
+    public ResponseEntity<List<MovimientoDto>> obtenerListadoMovimientos() {
+        return new ResponseEntity<>(
+                this.movimientoMapper.domainsToDtos(movimientoService.obtenerListadoMovimientos()), HttpStatus.OK);
+    }
+
+    /**
+     * Buscar cuentas por codigo.
+     *
+     * @param movimientoId codigo de compania
+     * @return CompaniasDto
+     * @author ksuarez on 2024/04/17.
+     */
+    @GetMapping(value = "/{movimientoId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Obtener cuentas por id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "cuentas encontrada."),
+            @ApiResponse(responseCode = "404", description = "cuentas no encontrada.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))) })
+    public ResponseEntity<MovimientoDto> obtenerMovimiento(@NotNull @PathVariable Long movimientoId)
+            {
+        return new ResponseEntity<>(this.movimientoMapper.domainToDto(movimientoService.obtenerMovimiento(movimientoId)),
+                HttpStatus.OK);
     }
 
     /**

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class MovimientoServiceImpl implements MovimientoService {
@@ -65,6 +66,16 @@ public class MovimientoServiceImpl implements MovimientoService {
 
         // 5. Actualizar saldo de la cuenta
         actualizarSaldoCuenta(cuenta, nuevoSaldo);
+    }
+
+    @Override
+    public List<Movimiento> obtenerListadoMovimientos() {
+        return movimientoRepository.obtenerListadoMovimientos();
+    }
+
+    @Override
+    public Movimiento obtenerMovimiento(Long movimientoId) {
+        return movimientoRepository.obtenerMovimiento(movimientoId);
     }
 
     private Cuenta validarCuentaExiste(Long cuentaId) throws EntidadNoEncontradaException {
